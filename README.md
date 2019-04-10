@@ -1,5 +1,5 @@
 # Echo Chamber Model
-This is a simulation code for echo chamber dynamics.
+This is a simulation code for echo chamber dynamics. Echo Demo, a simple version of this model is avaiable [here](https://haoopeng.github.io/echo-demo/).
 
 # Reference
 Kazutoshi Sasahara, Wen Chen, Hao Peng, Giovanni Luca Ciampaglia, Alessandro Flammini, and Filippo Menczer, On the Inevitability of Online Echo Chambers (in prep.)
