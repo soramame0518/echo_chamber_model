@@ -17,6 +17,7 @@ class EchoChamberDynamics(object):
     def __init__(self, num_agents, num_links, epsilon, sns_seed, l, data_dir):
         self.num_agents = num_agents
         self.l = l
+        self.epsilon = epsilon
         self.set_agents(num_agents, epsilon)
         self.social_media = SocialMedia(num_agents, num_links, l, sns_seed)
         self.data_dir = data_dir
@@ -37,16 +38,26 @@ class EchoChamberDynamics(object):
         for a in self.agents:
             total_discordant_msgs += len(a.discordant_msgs)
         return total_discordant_msgs
-
+   
     
-    def is_complete_segregation(self, G):
-        num_clusters = len(list(nx.weakly_connected_component_subgraphs(G)))
-        if num_clusters == 2:
+    def is_stationary_state(self, G):
+        num_clusters = len([G.subgraph(c) for c in nx.weakly_connected_components(G)])
+        num_coverged_clusters = 0
+
+        if num_clusters >= 2:
+            for C in [G.subgraph(c) for c in nx.weakly_connected_components(G)]:
+                _agents = [self.agents[i] for i in list(C.nodes())]
+                opinions = np.array([a.opinion for a in _agents])
+                opi_diff = np.max(opinions) - np.min(opinions)
+                if opi_diff <= self.epsilon:
+                    num_coverged_clusters += 1
+
+        if num_coverged_clusters == num_clusters:
             return True
         else:
             return False
-    
-    
+
+        
     def export_csv(self, data_dic, ofname):
         dir_path = os.path.join(self.data_dir, 'data')
         file_path = os.path.join(dir_path, ofname)
@@ -102,7 +113,7 @@ class EchoChamberDynamics(object):
             self.social_media.update_message_db(t, msg)
        
             # finalize and export data            
-            if self.is_complete_segregation(self.social_media.G):
+            if self.is_stationary_state(self.social_media.G):
                 self.final_exports(t)
                 break
             elif t >= t_max - 1:
