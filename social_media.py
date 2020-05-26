@@ -47,7 +47,7 @@ class SocialMedia(object):
 
     def set_node_colors(self, node_colors):
         for i, c in enumerate(node_colors):
-            self.G.node[i]['color'] = c
+            self.G.nodes[i]['color'] = c
 
 
     def show_screen(self, user_id):

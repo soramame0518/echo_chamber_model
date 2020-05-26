@@ -1,7 +1,7 @@
 # coding: utf-8
 # Echo Chamber Model
 # agent.py
-# Last Update: 20190410
+# Last Update: 20200526
 # by Kazutoshi Sasahara
 
 import numpy as np
@@ -37,8 +37,8 @@ class Agent(object):
     def post_message(self, msg_id, p):
         if len(self.concordant_msgs) > 0 and np.random.random() < p:
             # repost a friend's message selected at random
-            idx = (np.random.choice(self.concordant_msgs.index))
-            selected_msg = self.concordant_msgs.ix[idx]
+            idx = np.random.choice(self.concordant_msgs.index)
+            selected_msg = self.concordant_msgs.loc[idx]
             return Message(msg_id=int(msg_id), orig_msg_id=int(selected_msg.orig_msg_id),
                            who_posted=int(self.user_id), who_originated=int(selected_msg.who_originated),
                            content=selected_msg.content)
