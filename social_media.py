@@ -68,6 +68,7 @@ class SocialMedia(object):
         if len(my_message_df) > 0:
             last_message = my_message_df.content.values[0]
             friends = self.G.neighbors(user_id)
+            friends = list(friends)
             similar_messages_df = self.message_df[self.message_df.who_originated != user_id].tail(num_agents)
             similar_messages_df = similar_messages_df[abs(last_message - similar_messages_df.content) < epsilon]
             if len(similar_messages_df) > 0:

@@ -69,6 +69,7 @@ class Agent(object):
             # decide whom to follow
             following_method = np.random.choice(following_methods)
             friends = social_media.G.neighbors(self.user_id)
+            friends = list(friends)
 
             # Repost-based selection if possible; otherwise random selection
             if following_method == 'Repost':
